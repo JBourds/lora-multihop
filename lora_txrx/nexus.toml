@@ -1,0 +1,47 @@
+[params]
+timestep.length = 1
+timestep.unit = "ms"
+timestep.count = 5000 
+root = "~/simulations"  
+
+[channels]
+
+[channels.lora_sf6]
+type = { type = "exclusive", read_own_writes = false  }
+
+[nodes]
+
+[nodes.tx]
+deployments = [ {} ]
+
+[nodes.tx.resources]
+clock_rate = 16
+clock_units = "Mhz"
+
+[[nodes.tx.protocols]]
+
+root = "tx"
+name = "main"
+build = "make"
+build_args = ["build"]
+runner = "./bin/main"
+publishers = ["lora_sf6"]
+subscribers = ["lora_sf6"]
+
+
+[nodes.rx]
+deployments = [ {} ]
+
+[nodes.rx.resources]
+clock_rate = 16
+clock_units = "Mhz"
+
+[[nodes.rx.protocols]]
+
+root = "rx"
+name = "main"
+build = "make"
+build_args = ["build"]
+runner = "./bin/main"
+publishers = ["lora_sf6"]
+subscribers = ["lora_sf6"]

@@ -1,0 +1,59 @@
+# Short-range LoRa link: SX1276 915 MHz with rx_min_dbm = -78
+# to create a hard range cutoff at ~2.6 km (Friis free-space,
+# single antenna gain: RSSI = TX + G - FSPL).
+#
+# This lets us test multi-hop at realistic km-scale distances
+# instead of needing 100+ km separations with full sensitivity.
+#
+# Each spreading factor (SF6-SF12) shares the same link parameters
+# so SFs act purely as CDMA codes (no range difference per SF).
+
+# --- SF6 (default): 9375 bps ---
+
+[links.lora_short]
+medium.type = "wireless"
+medium.wavelength_meters = 0.328
+medium.gain_dbi = 2.0
+medium.rx_min_dbm = -78.0
+medium.tx_min_dbm = -4.0
+medium.tx_max_dbm = 20.0
+medium.shape = "omni"
+# Disable stochastic loss for now to validate protocol logic.
+# The hard cutoff (rx_min_dbm = -78) still enforces topology.
+packet_loss = "0"
+
+[links.lora_short.delays]
+transmission.rate = 9375
+transmission.data = "bit"
+transmission.time = "s"
+propagation.rate = "d / 299792.458"
+propagation.distance = "km"
+propagation.time = "s"
+
+[channels.lora_sf6]
+link = "lora_short"
+type = { type = "exclusive", ttl = 2000, unit = "ms", max_size = 255 }
+
+[channels.lora_sf7]
+link = "lora_short"
+type = { type = "exclusive", ttl = 2000, unit = "ms", max_size = 255 }
+
+[channels.lora_sf8]
+link = "lora_short"
+type = { type = "exclusive", ttl = 2000, unit = "ms", max_size = 255 }
+
+[channels.lora_sf9]
+link = "lora_short"
+type = { type = "exclusive", ttl = 2000, unit = "ms", max_size = 255 }
+
+[channels.lora_sf10]
+link = "lora_short"
+type = { type = "exclusive", ttl = 2000, unit = "ms", max_size = 255 }
+
+[channels.lora_sf11]
+link = "lora_short"
+type = { type = "exclusive", ttl = 2000, unit = "ms", max_size = 255 }
+
+[channels.lora_sf12]
+link = "lora_short"
+type = { type = "exclusive", ttl = 2000, unit = "ms", max_size = 255 }

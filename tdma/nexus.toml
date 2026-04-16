@@ -1,0 +1,38 @@
+[params]
+timestep.length = 1
+timestep.unit = "ms"
+timestep.count = 10000 
+root = "~/simulations"  
+
+[links]
+
+[links.lora]
+
+[channels]
+
+[channels.lora_sf6]
+link = "lora"
+type = { type = "shared" }
+
+[nodes]
+
+[nodes.nodes]
+deployments = [ 
+    { run_args = ["0"] },
+    { run_args = ["1"] }, 
+    { run_args = ["2"] }, 
+]
+
+[nodes.nodes.resources]
+clock_rate = 16
+clock_units = "Mhz"
+
+[[nodes.nodes.protocols]]
+
+root = "node"
+name = "main"
+build = "make"
+build_args = ["build"]
+runner = "./bin/main"
+publishers = ["lora_sf6"]
+subscribers = ["lora_sf6"]

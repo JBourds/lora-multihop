@@ -1,0 +1,21 @@
+{
+    "name": "Net",
+    "version": "1.0.0",
+    "description": "Common network interface for transmissions.",
+    "dependencies": [ 
+        { "name": "Lora", "version": "file://lib/lora" },
+        { "name": "RTCLib", "version": "adafruit/RTClib@^2.1.4"}, 
+        { "name": "TimeLib", "version": "paulstoffregen/Time@^1.6.1"},  
+        { "name": "ArduinoStubs", "version": "file://lib/arduino_stubs" }
+    ],
+    "build": {
+        "libLDFMode": "deep+"
+    },
+    "authors": [
+        {
+            "name": "Jordan Bourdeau",
+            "email": "jordanbourdeau03@outlook.com",
+            "maintainer": true
+        }
+    ]
+}

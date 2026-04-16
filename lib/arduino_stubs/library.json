@@ -1,0 +1,16 @@
+{
+    "name": "ArduinoStubs",
+    "version": "1.0.0",
+    "description": "Stubs for Arduino functions to be used in simulation.",
+    "dependencies": [],
+    "build": {
+        "libLDFMode": "deep+"
+    },
+    "authors": [
+        {
+            "name": "Jordan Bourdeau",
+            "email": "jordanbourdeau03@outlook.com",
+            "maintainer": true
+        }
+    ]
+}

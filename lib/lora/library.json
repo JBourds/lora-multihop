@@ -1,0 +1,19 @@
+{
+    "name": "Lora",
+    "version": "1.0.0",
+    "description": "Lora radio code for real hardware and the simulation.",
+    "dependencies": [
+        { "name": "RadioHead", "version": "epsilonrt/RadioHead@^1.122" },
+        { "name": "ArduinoStubs", "version": "file://lib/arduino_stubs" }
+    ],
+    "build": {
+        "libLDFMode": "deep+"
+    },
+    "authors": [
+        {
+            "name": "Jordan Bourdeau",
+            "email": "jordanbourdeau03@outlook.com",
+            "maintainer": true
+        }
+    ]
+}
