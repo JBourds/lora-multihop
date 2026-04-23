@@ -27,7 +27,7 @@ root = "~/simulations"
 
 [nodes.node0]
 profile = "arduino_mega"
-deployments = [{ run_args = ["0"], position = { point = [0, 0, 0], unit = "km" } }]
+deployments = [{ run_args = ["0"], position = { point = { x = 0, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.node0.protocols]]
 root = "node"
@@ -39,7 +39,7 @@ subscribers = ["lora_sf7"]
 
 [nodes.node1]
 profile = "arduino_mega"
-deployments = [{ run_args = ["1"], position = { point = [2, 0, 0], unit = "km" } }]
+deployments = [{ run_args = ["1"], position = { point = { x = 2, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.node1.protocols]]
 root = "node"
@@ -51,7 +51,7 @@ subscribers = ["lora_sf7"]
 
 [nodes.node2]
 profile = "arduino_mega"
-deployments = [{ run_args = ["2"], position = { point = [4, 0, 0], unit = "km" } }]
+deployments = [{ run_args = ["2"], position = { point = { x = 4, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.node2.protocols]]
 root = "node"
@@ -63,7 +63,7 @@ subscribers = ["lora_sf7"]
 
 [nodes.node3]
 profile = "arduino_mega"
-deployments = [{ run_args = ["3"], position = { point = [6, 0, 0], unit = "km" } }]
+deployments = [{ run_args = ["3"], position = { point = { x = 6, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.node3.protocols]]
 root = "node"

@@ -1,38 +1,79 @@
+# TDMA demo -- 1 gateway at the centre, 7 peripherals on a ring.
+#
+# Protocol (see node/src/main.cpp):
+#   SLOT_SECONDS       = 2  (duration of each node's transmit window)
+#   NODE_COUNT         = 8  (1 gateway + 7 peripherals, one slot each)
+#   SUPERFRAME_SECONDS = 16 (full round-robin cycle)
+#
+# Trace pattern (repeats every 16s):
+#   t in [ 0,  2)  -> gateway   (id 0) transmits, all peripherals receive
+#   t in [ 2,  4)  -> peri_1    (id 1) transmits
+#   t in [ 4,  6)  -> peri_2    (id 2) transmits
+#   ...
+#   t in [14, 16)  -> peri_7    (id 7) transmits
+#
+# 64s of simulation = 4 complete superframes, enough to show the round-robin
+# pattern clearly without overwhelming the audience.
+
 [params]
 timestep.length = 1
-timestep.unit = "ms"
-timestep.count = 10000 
-root = "~/simulations"  
-
-[links]
-
-[links.lora]
+timestep.unit   = "ms"
+timestep.count  = 64000
+seed            = 42
+time_dilation   = 1.0
+root            = "~/simulations"
 
 [channels]
 
+# Shared medium: every transmission is visible to every subscriber.
+#   ttl=500ms    -- under one slot, so stale bursts don't pile up
+#   read_own_writes=false -- keeps the trace uncluttered by TX/RX echoes
 [channels.lora_sf6]
-link = "lora"
-type = { type = "shared" }
+type = { type = "shared", ttl = 500, unit = "ms", read_own_writes = false, max_size = 255 }
 
 [nodes]
 
-[nodes.nodes]
-deployments = [ 
-    { run_args = ["0"] },
-    { run_args = ["1"] }, 
-    { run_args = ["2"] }, 
+# Gateway -- fixed at the origin, plays slot 0.
+[nodes.gateway]
+deployments = [
+    { run_args = ["0"], position = { point = { x = 0.0, y = 0.0, z = 0 }, unit = "km" } },
 ]
 
-[nodes.nodes.resources]
-clock_rate = 16
+[nodes.gateway.resources]
+clock_rate  = 16
 clock_units = "Mhz"
 
-[[nodes.nodes.protocols]]
+[[nodes.gateway.protocols]]
+root         = "node"
+name         = "main"
+build        = "make"
+build_args   = ["build", "nodes=8"]
+runner       = "./bin/main"
+publishers   = ["lora_sf6"]
+subscribers  = ["lora_sf6"]
 
-root = "node"
-name = "main"
-build = "make"
-build_args = ["build"]
-runner = "./bin/main"
-publishers = ["lora_sf6"]
-subscribers = ["lora_sf6"]
+# Peripherals -- 7 nodes evenly spaced on a 1 km ring around the gateway.
+# Slot assignment = run_args[0]; the GUI will show them as peripheral.0..6.
+[nodes.peripheral]
+deployments = [
+    { run_args = ["1"], position = { point = { x =  1.000, y =  0.000, z = 0 }, unit = "km" } },
+    { run_args = ["2"], position = { point = { x =  0.624, y =  0.782, z = 0 }, unit = "km" } },
+    { run_args = ["3"], position = { point = { x = -0.223, y =  0.975, z = 0 }, unit = "km" } },
+    { run_args = ["4"], position = { point = { x = -0.901, y =  0.434, z = 0 }, unit = "km" } },
+    { run_args = ["5"], position = { point = { x = -0.901, y = -0.434, z = 0 }, unit = "km" } },
+    { run_args = ["6"], position = { point = { x = -0.223, y = -0.975, z = 0 }, unit = "km" } },
+    { run_args = ["7"], position = { point = { x =  0.624, y = -0.782, z = 0 }, unit = "km" } },
+]
+
+[nodes.peripheral.resources]
+clock_rate  = 16
+clock_units = "Mhz"
+
+[[nodes.peripheral.protocols]]
+root         = "node"
+name         = "main"
+build        = "make"
+build_args   = ["build", "nodes=8"]
+runner       = "./bin/main"
+publishers   = ["lora_sf6"]
+subscribers  = ["lora_sf6"]

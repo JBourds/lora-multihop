@@ -37,7 +37,7 @@ root = "~/simulations"
 # Gateway node (address 0, ring 0) at origin
 [nodes.gateway]
 profile = "arduino_mega"
-deployments = [{ run_args = ["0"], position = { point = [0, 0, 0], unit = "km" } }]
+deployments = [{ run_args = ["0"], position = { point = { x = 0, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.gateway.protocols]]
 root = "node"
@@ -51,7 +51,7 @@ subscribers = ["lora_sf6", "lora_sf7", "lora_sf8", "lora_sf9", "lora_sf10", "lor
 # Relay node 1: 2.5 km east of gateway
 [nodes.relay1]
 profile = "arduino_mega"
-deployments = [{ run_args = ["1"], position = { point = [2.5, 0, 0], unit = "km" } }]
+deployments = [{ run_args = ["1"], position = { point = { x = 2.5, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.relay1.protocols]]
 root = "node"
@@ -65,7 +65,7 @@ subscribers = ["lora_sf6", "lora_sf7", "lora_sf8", "lora_sf9", "lora_sf10", "lor
 # Relay node 2: 5 km east of gateway (2.5 km from relay1)
 [nodes.relay2]
 profile = "arduino_mega"
-deployments = [{ run_args = ["2"], position = { point = [5, 0, 0], unit = "km" } }]
+deployments = [{ run_args = ["2"], position = { point = { x = 5, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.relay2.protocols]]
 root = "node"
@@ -79,7 +79,7 @@ subscribers = ["lora_sf6", "lora_sf7", "lora_sf8", "lora_sf9", "lora_sf10", "lor
 # Sensor node 1: 3 hops from gateway, only reachable via sensor3 (2.0 km)
 [nodes.sensor1]
 profile = "arduino_mega"
-deployments = [{ run_args = ["3"], position = { point = [2.5, 4.5, 0], unit = "km" } }]
+deployments = [{ run_args = ["3"], position = { point = { x = 2.5, y = 4.5, z = 0 }, unit = "km" } }]
 
 [[nodes.sensor1.protocols]]
 root = "node"
@@ -93,7 +93,7 @@ subscribers = ["lora_sf6", "lora_sf7", "lora_sf8", "lora_sf9", "lora_sf10", "lor
 # Sensor node 2: close to gateway (2.5 km south)
 [nodes.sensor2]
 profile = "arduino_mega"
-deployments = [{ run_args = ["4"], position = { point = [0, -2.5, 0], unit = "km" } }]
+deployments = [{ run_args = ["4"], position = { point = { x = 0, y = -2.5, z = 0 }, unit = "km" } }]
 
 [[nodes.sensor2.protocols]]
 root = "node"
@@ -107,7 +107,7 @@ subscribers = ["lora_sf6", "lora_sf7", "lora_sf8", "lora_sf9", "lora_sf10", "lor
 # Sensor node 3: 2.5 km north of relay1, out of gateway range (3.54 km)
 [nodes.sensor3]
 profile = "arduino_mega"
-deployments = [{ run_args = ["5"], position = { point = [2.5, 2.5, 0], unit = "km" } }]
+deployments = [{ run_args = ["5"], position = { point = { x = 2.5, y = 2.5, z = 0 }, unit = "km" } }]
 
 [[nodes.sensor3.protocols]]
 root = "node"
@@ -121,7 +121,7 @@ subscribers = ["lora_sf6", "lora_sf7", "lora_sf8", "lora_sf9", "lora_sf10", "lor
 # Sensor node 4: far east end, only reachable via relay2 (tests 3 hops)
 [nodes.sensor4]
 profile = "arduino_mega"
-deployments = [{ run_args = ["6"], position = { point = [7.5, 0, 0], unit = "km" } }]
+deployments = [{ run_args = ["6"], position = { point = { x = 7.5, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.sensor4.protocols]]
 root = "node"
