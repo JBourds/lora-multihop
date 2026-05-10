@@ -3,8 +3,10 @@ use = ["boards/arduino_mega", "./lora_short"]
 [params]
 timestep.length = 1
 timestep.unit = "ms"
-# ~300s of simulation (~4-5 superframes at new frequency)
-timestep.count = 300000
+# ~600s of simulation (~11 superframes at SUPERFRAME_FREQUENCY_S=53s).
+# Needs to be longer than RING_HYSTERESIS_THRESHOLD * superframes for
+# ring values to propagate fully through the 3-hop chain.
+timestep.count = 600000
 time_dilation = 10.0
 seed = 42
 root = "~/simulations"
