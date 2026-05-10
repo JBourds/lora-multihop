@@ -154,7 +154,7 @@ int main(int argc, char* argv[]) {
 
     // Open channel file BEFORE FreeRTOS scheduler starts.
     // Nexus exclusive channels may require separate read/write fds.
-    std::string channel_path = g_nexus_root + "/ctl.lora_sf7/channel";
+    std::string channel_path = g_nexus_root + "/lora_sf7/channel";
     g_channel_rd_fd = open(channel_path.c_str(), O_RDONLY);
     g_channel_wr_fd = open(channel_path.c_str(), O_WRONLY);
     if (0 > g_channel_rd_fd || 0 > g_channel_wr_fd) {
