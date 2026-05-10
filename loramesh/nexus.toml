@@ -3,9 +3,13 @@ use = ["boards/arduino_mega", "../multihop/lora_short"]
 [params]
 timestep.length = 1
 timestep.unit = "ms"
-# 120s of simulation
-timestep.count = 120000
-time_dilation = 10.0
+# 600s of simulation. time_dilation = 1.0 (real-time) because the
+# LoRaMesher port's FreeRTOS uses wall-clock vTaskDelay, so any
+# dilation > 1 ends the sim before the protocol's heartbeats fire.
+# 600 s gives the chain ends ~10 hello-routing rounds to populate the
+# full N-1 routing-table size.
+timestep.count = 600000
+time_dilation = 1.0
 seed = 42
 root = "~/simulations"
 
@@ -26,7 +30,6 @@ root = "~/simulations"
 [nodes]
 
 [nodes.node0]
-profile = "arduino_mega"
 deployments = [{ run_args = ["0"], position = { point = { x = 0, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.node0.protocols]]
@@ -38,7 +41,6 @@ publishers = ["lora_sf7"]
 subscribers = ["lora_sf7"]
 
 [nodes.node1]
-profile = "arduino_mega"
 deployments = [{ run_args = ["1"], position = { point = { x = 2, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.node1.protocols]]
@@ -50,7 +52,6 @@ publishers = ["lora_sf7"]
 subscribers = ["lora_sf7"]
 
 [nodes.node2]
-profile = "arduino_mega"
 deployments = [{ run_args = ["2"], position = { point = { x = 4, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.node2.protocols]]
@@ -62,7 +63,6 @@ publishers = ["lora_sf7"]
 subscribers = ["lora_sf7"]
 
 [nodes.node3]
-profile = "arduino_mega"
 deployments = [{ run_args = ["3"], position = { point = { x = 6, y = 0, z = 0 }, unit = "km" } }]
 
 [[nodes.node3.protocols]]
