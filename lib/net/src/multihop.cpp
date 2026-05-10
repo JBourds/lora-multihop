@@ -613,6 +613,14 @@ void run_clusterhead_joining(uint32_t duration_ms, bool is_clusterhead,
     Address target_node;
     Ring target_ring;
     candidates->top(&target_node, &target_ring);
+    // Only follow a CH that is strictly closer to the gateway than we
+    // are. Without this, a later round's candidate (e.g. a downstream
+    // relay) can overwrite an earlier round's correct attachment to a
+    // CH at a lower ring -> chain inversion.
+    if (UNKNOWN_RING != STATE.ring && target_ring >= STATE.ring) {
+        target_node = UNKNOWN_ADDR;
+        target_ring = UNKNOWN_RING;
+    }
     DBG("CH joining (eligible_ring=%u): is_ch=%d eligible_follower=%d "
         "target=%u target_ring=%u",
         eligible_ring, is_clusterhead, eligible_follower, target_node,
@@ -723,6 +731,11 @@ void run_clusterhead_joining(uint32_t duration_ms, bool is_clusterhead,
                     if (!tried_second) {
                         candidates->second(&target_node, &target_ring);
                         tried_second = true;
+                        if (UNKNOWN_RING != STATE.ring &&
+                            target_ring >= STATE.ring) {
+                            target_node = UNKNOWN_ADDR;
+                            target_ring = UNKNOWN_RING;
+                        }
                         if (target_node != UNKNOWN_ADDR) {
                             try_to_follow = true;
                             follow_deadline = time::MsDeadline(
