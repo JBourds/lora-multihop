@@ -92,8 +92,10 @@ void setup() {
         return;
     }
 
-    // Clusterhead probability: gateway always volunteers (255), others at 50%
-    uint8_t ch_prob = (DEVICE_ID == 0) ? 255 : 128;
+    // TODO: Cleanup this param in init to use strategy pattern and have it
+    // take a `bool (*should_volunteer)(uint8_t ring)` instead.
+    // Clusterhead probability: gateway always volunteers (255)
+    uint8_t ch_prob = 255;
 
     net::multihop::RC rc = net::multihop::init(&node, &mac, &link, acks_buf,
                                                slots_buf, MAX_SLOTS, ch_prob);

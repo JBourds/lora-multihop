@@ -91,11 +91,34 @@ static RC send(Message *msg, uint8_t *buf = nullptr, size_t sz = 0) {
 
 static const uint8_t CREDIT_SCALE = 32;
 
+// Ring-aware base CH probability. Nodes closer to the gateway carry
+// upstream traffic for everyone behind them, so they must be CH almost
+// every superframe. Outer-ring nodes don't relay anything; allowing
+// them to volunteer just creates collisions in their advertising round.
+// Nodes with no ring info shouldn't volunteer at all since they don't
+// know if they're a relay yet.
+static uint8_t base_p_for_ring(Ring ring) {
+    if (UNKNOWN_RING == ring) {
+        // ~6%, mostly silent
+        return 16;
+    }
+    if (GATEWAY_RING == ring) {
+        return 255;
+    }
+    if (ring >= 4) {
+        return 64;  // ~25%, deep leaves rarely volunteer
+    }
+    // Linear taper: ring 1 = 255, ring 2 = 195, ring 3 = 135.
+    return 255 - (ring - 1) * 60;
+}
+
 static bool announce_clusterhead() {
+    // clusterhead_p == 0 disables the role entirely (e.g. low-power leaves
+    // that opt out). Otherwise the ring decides the rate.
     if (0 == STATE.clusterhead_p) {
         return false;
     }
-    uint16_t effective_p = STATE.clusterhead_p;
+    uint16_t effective_p = base_p_for_ring(STATE.ring);
     effective_p += static_cast<uint16_t>(STATE.ch_credit) * CREDIT_SCALE;
     if (UINT8_MAX < effective_p) {
         effective_p = UINT8_MAX;
