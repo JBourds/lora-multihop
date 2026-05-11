@@ -1,7 +1,8 @@
-.PHONY: build clean
+.PHONY: build clean board lib monitor pio-build
 
 BUILD   := build
 BIN     := bin
+PIO     := .pio
 LIB     := ../../lib
 TARGET  := $(BIN)/main
 
@@ -40,4 +41,24 @@ $(BUILD)/%.o: $(SRC)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(BIN) $(BUILD)
+	$(RM) $(BIN) $(BUILD) $(PIO)
+	-unlink lib 2>/dev/null
+
+# PlatformIO uses lib_deps = symlink://lib/<name>, which expects a `lib`
+# directory beside platformio.ini. Symlink to the shared library tree.
+lib:
+	@test -e lib || ln -s ../../lib lib
+
+# Compile-only check that the embedded build works. Skips the upload
+# step so it can run without a board attached.
+pio-build: lib
+	pio run -e aura
+
+# Build and flash to a connected Arduino Mega 2560. Caller must supply
+# port=/dev/ttyUSBN.
+board: lib
+	export DEVICE_ID=$(id); \
+	pio run -e aura --target upload --upload-port $(port)
+
+monitor:
+	pio device monitor -p $(port)

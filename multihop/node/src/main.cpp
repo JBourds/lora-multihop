@@ -24,7 +24,12 @@ uint8_t DEVICE_ID = 0;
 // windows for clusterhead-follower communication.
 // Window length = slot_s * slot_count; frequency must be >= window length.
 #define SUPERFRAME_SLOT_S 3
-#define VTDMA_WINDOW 5
+// VTDMA_WINDOW caps the number of followers a clusterhead can accept
+// per superframe (one of the window's slots is the CH's own). The
+// link layer's CDMA hash wraps modulo 7 to map slot indices onto the
+// seven available spreading factors (sf6..sf12), so 7 is the largest
+// window size that keeps every slot on a distinct code.
+#define VTDMA_WINDOW 7
 #define REUSE_DISTANCE 3
 #define SUPERFRAME_SLOT_COUNT (1 + REUSE_DISTANCE * VTDMA_WINDOW)
 #define SUPERFRAME_FREQUENCY_S (SUPERFRAME_SLOT_S * SUPERFRAME_SLOT_COUNT + 5)
